@@ -1,9 +1,10 @@
-const express = require("express");
+// backend/user/index.js
+const express = require('express');
+const userRouter = require("./user");
+const accountRouter = require("./account");
 
 const router = express.Router();
 
-router.get("/",(req,res)=>{
-    res.send("Hello...");
-})
+router.use("/user", userRouter);
 
 module.exports = router;
