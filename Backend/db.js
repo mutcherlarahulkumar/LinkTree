@@ -1,7 +1,7 @@
 // backend/db.js
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://rahul:hDzJYkAenZIbyQLR@cluster0.qkwlpub.mongodb.net/")
+mongoose.connect("mongodb://127.0.0.1:27017/LinkTree")
 
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
@@ -30,6 +30,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         maxLength: 50
+    },
+    gender: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 10
+    },
+    no_of_posts: {
+        type: Number,
+        default: 0,
     }
 });
 

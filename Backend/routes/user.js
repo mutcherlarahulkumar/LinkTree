@@ -6,13 +6,14 @@ const zod = require("zod");
 const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
-const  { authMiddleware } = require("../middleware");
+const { authMiddleware } = require("../middleware");
 
 const signupBody = zod.object({
     username: zod.string().email(),
-	firstName: zod.string(),
-	lastName: zod.string(),
-	password: zod.string()
+    firstName: zod.string(),
+    lastName: zod.string(),
+    password: zod.string(),
+    gender: zod.string()
 })
 
 router.post("/signup", async (req, res) => {
@@ -38,13 +39,15 @@ router.post("/signup", async (req, res) => {
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        gender: req.body.gender,
+        no_of_posts: req.body.no_of_posts
     })
     const userId = user._id;
 
-    await Account.create({
-        userId,
-        balance: 1 + Math.random() * 10000
-    })
+    // await Account.create({
+    //     userId,
+    //     balance: 1 + Math.random() * 10000
+    // })
 
     const token = jwt.sign({
         userId
@@ -59,7 +62,7 @@ router.post("/signup", async (req, res) => {
 
 const signinBody = zod.object({
     username: zod.string().email(),
-	password: zod.string()
+    password: zod.string()
 })
 
 router.post("/signin", async (req, res) => {
@@ -79,21 +82,21 @@ router.post("/signin", async (req, res) => {
         const token = jwt.sign({
             userId: user._id
         }, JWT_SECRET);
-  
+
         res.json({
             token: token
         })
         return;
     }
 
-    
+
     res.status(411).json({
         message: "Error while logging in"
     })
 })
 
 const updateBody = zod.object({
-	password: zod.string().optional(),
+    password: zod.string().optional(),
     firstName: zod.string().optional(),
     lastName: zod.string().optional(),
 })
@@ -114,6 +117,20 @@ router.put("/", authMiddleware, async (req, res) => {
         message: "Updated successfully"
     })
 })
+
+/*
+router.get("/:id", async (req, res) => {
+    const { id } = req.params.id;
+    console.log(id);
+    const user = await User.findById(id);
+
+    res.status(200).json({
+        message: "User fetched",
+        id: `${id}`,
+        user: user,
+    });
+})
+*/
 
 router.get("/bulk", async (req, res) => {
     const filter = req.query.filter || "";

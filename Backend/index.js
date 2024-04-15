@@ -9,4 +9,6 @@ app.use(express.json());
 
 app.use("/api/v1", rootRouter);
 
-app.listen(3000);
+app.listen(3000, () => {
+    console.log("RUNNING ON 3000");
+});
