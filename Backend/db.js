@@ -1,7 +1,7 @@
 // backend/db.js
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/LinkTree")
+mongoose.connect("mongodb+srv://rahul:hDzJYkAenZIbyQLR@cluster0.qkwlpub.mongodb.net/");
 
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
@@ -43,22 +43,34 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const accountSchema = new mongoose.Schema({
-    userId: {
+const postsSchema = new mongoose.Schema({
+    userID: {
         type: mongoose.Schema.Types.ObjectId, // Reference to User model
         ref: 'User',
         required: true
     },
-    balance: {
-        type: Number,
-        required: true
+    posts: {
+        type: String,
     }
-});
+})
 
-const Account = mongoose.model('Account', accountSchema);
+// const accountSchema = new mongoose.Schema({
+// userId: {
+//     type: mongoose.Schema.Types.ObjectId, // Reference to User model
+//     ref: 'User',
+//     required: true
+// },
+//     balance: {
+//         type: Number,
+//         required: true
+//     }
+// });
+
+// const Account = mongoose.model('Account', accountSchema);
 const User = mongoose.model('User', userSchema);
+const Posts = mongoose.model('Posts', postsSchema);
 
 module.exports = {
-	User,
-    Account
+    User,
+    Posts
 };
